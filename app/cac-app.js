@@ -24,23 +24,34 @@ angular.module('CaCApp', ['ngRoute'])
 		});
 
 	}) // end of config
-	.factory('GeoAllCountries', function($http){
+	.factory('GeoFactory', function($http){
 		
 		var userName = "sabbasi";
 		var urlAllCountries = "http://api.geonames.org/countryInfo?type=JSON&" + "username=" + userName;
+		var urlOneCountry = "http://api.geonames.org/search?type=JSON" + "&username=" + userName;
+		var exports = {};
 
-		return $http.get(urlAllCountries);
+		exports = {
+			findAllCountries: function() {
+				return $http.get(urlAllCountries);
+			},
+			findOneCountry: function(country, capital) {
+				return $http.get(urlOneCountry + "&q=" + country + "&name_equals=" + capital + "&isNameRequired=true");
+			}
+		}
+
+		return exports;
 
 	}) //end of Factory
-
+/*
 	.factory('GeoOneCountry', function($http){
 		
 		var userName = "sabbasi";
-		var urlOneCountry = "http://api.geonames.org/search?type=JSON" + "&username=" + userName;
+		
 
 		var GeoOneCountry = {
 			findCountry: function(country, capital) {
-				return $http.get(urlOneCountry + "&q=" + country + "&name=" + capital + "&isNameRequired=true");
+				
 			}
 		};
 
@@ -48,22 +59,24 @@ angular.module('CaCApp', ['ngRoute'])
 		//return $http.get(urlOneCountry);
 
 	}) //end of Factory
-
+*/
 	.controller('HomeCtrl', function($scope){
-		console.log("home controller");
+		$scope.home = "home controller description goes here..";
 
 	})
-	.controller('AllCountriesCtrl', function($scope, GeoAllCountries){
-		GeoAllCountries.success(function(response){
+
+	.controller('AllCountriesCtrl', function($scope, GeoFactory){
+		GeoFactory.findAllCountries().success(function(response){
 			$scope.countries = response.geonames;
 		});
 		
 	})
-	.controller('OneCountryCtrl', function($scope, country, capital, GeoOneCountry){
+
+	.controller('OneCountryCtrl', function($scope, country, capital, GeoFactory){
 		$scope.country = country;
 		$scope.capital = capital;
-		GeoOneCountry.findCountry(country, capital).success(function(response){
-			$scope.oneCountry = response.geonames;
-			console.log($scope.oneCountry);
+		GeoFactory.findOneCountry(country, capital).success(function(response){
+			console.log(response.geonames);
+			$scope.capitalPopulation = response.geonames[0].population;
 		});
 	});
