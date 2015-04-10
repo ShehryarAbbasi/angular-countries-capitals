@@ -22,10 +22,12 @@ angular.module('CaCApp', ['ngRoute'])
 					return capital;
 				}
 			}
+		}).otherwise({
+			redirectTo : '/'
 		}); 
 	}) // end of config
 
-	.factory('GeoFactory', function($http){
+	.factory('GeonamesFactory', function($http){
 		
 		var userName = "sabbasi";
 		var urlAllCountries = "http://api.geonames.org/countryInfo?type=JSON&" + "username=" + userName;
@@ -49,16 +51,16 @@ angular.module('CaCApp', ['ngRoute'])
 		$scope.home = "home controller description goes here..";
 	}) // end of HomeCtrl Controller
 
-	.controller('AllCountriesCtrl', function($scope, GeoFactory){
-		GeoFactory.findAllCountries().success(function(response){
+	.controller('AllCountriesCtrl', function($scope, GeonamesFactory){
+		GeonamesFactory.findAllCountries().success(function(response){
 			$scope.countries = response.geonames;
 		});	
 	}) // end of AllCountriesCtrl Controller
 
-	.controller('OneCountryCtrl', function($scope, country, capital, GeoFactory){
+	.controller('OneCountryCtrl', function($scope, country, capital, GeonamesFactory){
 		$scope.country = country;
 		$scope.capital = capital;
-		GeoFactory.findOneCountry(country, capital).success(function(response){
+		GeonamesFactory.findOneCountry(country, capital).success(function(response){
 			console.log(response.geonames);
 			$scope.capitalPopulation = response.geonames[0].population;
 		});
