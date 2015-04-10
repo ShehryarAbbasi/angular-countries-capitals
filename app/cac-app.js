@@ -1,4 +1,5 @@
 angular.module('CaCApp', ['ngRoute'])
+
 	.config(function($routeProvider){
 		$routeProvider.
 			when('/', {
@@ -21,9 +22,9 @@ angular.module('CaCApp', ['ngRoute'])
 					return capital;
 				}
 			}
-		});
-
+		}); 
 	}) // end of config
+
 	.factory('GeoFactory', function($http){
 		
 		var userName = "sabbasi";
@@ -43,34 +44,16 @@ angular.module('CaCApp', ['ngRoute'])
 		return exports;
 
 	}) //end of Factory
-/*
-	.factory('GeoOneCountry', function($http){
-		
-		var userName = "sabbasi";
-		
 
-		var GeoOneCountry = {
-			findCountry: function(country, capital) {
-				
-			}
-		};
-
-		return GeoOneCountry;
-		//return $http.get(urlOneCountry);
-
-	}) //end of Factory
-*/
 	.controller('HomeCtrl', function($scope){
 		$scope.home = "home controller description goes here..";
-
-	})
+	}) // end of HomeCtrl Controller
 
 	.controller('AllCountriesCtrl', function($scope, GeoFactory){
 		GeoFactory.findAllCountries().success(function(response){
 			$scope.countries = response.geonames;
-		});
-		
-	})
+		});	
+	}) // end of AllCountriesCtrl Controller
 
 	.controller('OneCountryCtrl', function($scope, country, capital, GeoFactory){
 		$scope.country = country;
@@ -79,4 +62,4 @@ angular.module('CaCApp', ['ngRoute'])
 			console.log(response.geonames);
 			$scope.capitalPopulation = response.geonames[0].population;
 		});
-	});
+	}); // end of OneCountryCtrl Controller and App
