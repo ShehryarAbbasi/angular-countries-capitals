@@ -10,3 +10,9 @@
 <div ng-repeat="neighbor in neighbors">
 	<a href="#/countries/{{ neighbor.countryCode }}/{{ neighbor.countryName }}">{{ neighbor.countryName }}</a>
 </div>
+
+<div>
+	<img src="http://www.geonames.org/flags/x/{{countryCode | lowercase}}.gif" />
+	<img id='myImage' src="http://www.geonames.org/img/country/250/{{countryCode}}.png" />
+
+</div>

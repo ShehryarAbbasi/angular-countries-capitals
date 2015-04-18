@@ -35,16 +35,16 @@ angular.module('CaCApp', ['ngRoute'])
 		var exports = {};
 
 		exports = {
-			findAllCountries: function() {
+			getAllCountries: function() {
 				return $http.get(apiCountries, {cache: true});
 			},
-			findOneCountry: function(countryCode, country) {
+			getCountry: function(countryCode, country) {
 				return $http.get(apiCountries + "&q=" + country + "&country=" + countryCode, {cache: true});
 			},
-			findCapital: function(countryCode, country, capital) {
+			getCapital: function(countryCode, country, capital) {
 				return $http.get(apiCapitals + "&q=" + country + "&country=" + countryCode + "&name_equals=" + capital, {cache: true});
 			},
-			findNeighbors: function(countryCode) {
+			getNeighbors: function(countryCode) {
 				return $http.get(apiNeighbors + "&country=" + countryCode, {cache: true});
 			}
 
@@ -59,7 +59,7 @@ angular.module('CaCApp', ['ngRoute'])
 	}) // end of HomeCtrl Controller
 
 	.controller('AllCountriesCtrl', function($scope, GeonamesFactory){
-		GeonamesFactory.findAllCountries().success(function(response){
+		GeonamesFactory.getAllCountries().success(function(response){
 			$scope.countries = response.geonames;
 		});	
 	}) // end of AllCountriesCtrl Controller
@@ -67,23 +67,34 @@ angular.module('CaCApp', ['ngRoute'])
 	.controller('OneCountryCtrl', function($scope, countryCode, country, GeonamesFactory){
 
 		$scope.country = country;
-		var countryCapital = [''];
+		$scope.countryCode = countryCode;
 
-		GeonamesFactory.findOneCountry(countryCode, country).success(function(response){
-			$scope.countryPopulation = response.geonames[0].population;
-			$scope.countryArea = response.geonames[0].areaInSqKm;
-			$scope.countryCapital = response.geonames[0].capital;
-			countryCapital[0] = $scope.countryCapital;
-			console.log("capital inside: " + countryCapital[0]);
-			
-		});
-			console.log("capital outside country: " + countryCapital[0]);
-		GeonamesFactory.findCapital(countryCode, country, countryCapital).success(function(response){
-			$scope.capitalPopulation = response.geonames[0].population;
-		});
+		{
+			var loadCountry = function ()
+				{
+					return GeonamesFactory.getCountry(countryCode, country)
+							.success( function (response) {
+								$scope.countryPopulation = response.geonames[0].population;
+								$scope.countryArea = response.geonames[0].areaInSqKm;
+								$scope.countryCapital = response.geonames[0].capital;
+							});
+				},
+				loadNeighbors = function ()
+				{
+					return GeonamesFactory.getNeighbors(countryCode)
+							.success( function (response) {
+									$scope.neighbors = response.geonames;
+							});
+				},
+				loadCapital = function ()
+				{
+					return GeonamesFactory.getCapital(countryCode, country, $scope.countryCapital)
+							.success( function (response) {
+										$scope.capitalPopulation = response.geonames[0].population;
+									});
+				};
 
-		GeonamesFactory.findNeighbors(countryCode).success(function(response){
-			$scope.neighbors = response.geonames;
-			console.log(response.geonames);
-		});
+				loadCountry().then(loadNeighbors).then(loadCapital);
+		};
+
 	}); // end of OneCountryCtrl Controller and App
