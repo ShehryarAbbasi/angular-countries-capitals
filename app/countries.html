@@ -16,7 +16,7 @@
           
             <tr ng-class="{even: $even, odd: $odd}">
               
-              <td> <a href="#/countries/{{ country.countryName }}/{{country.capital}}">{{ country.countryName }}</a></td>
+              <td> <a href="#/countries/{{ country.countryCode }}/{{ country.countryName }}">{{ country.countryName }}</a></td>
               <td> {{ country.countryCode }} </td>
               <td> {{ country.capital }} </td>
               <td> {{ country.areaInSqKm | number: 0 }} </td>

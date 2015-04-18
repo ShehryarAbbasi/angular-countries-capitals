@@ -1,9 +1,12 @@
 
 <h3>Country: {{country}}</h3>
 <ul>
-	<li>Population of Country: </li>
-	<li>Area: </li>
-	<li>Capital: <strong>{{ capital }}</strong></li>
+	<li>Population of Country: <strong>{{ countryPopulation | number: 0 }}</strong></li>
+	<li>Area: <strong>{{ countryArea }}</strong> </li>
+	<li>Capital: <strong>{{ countryCapital }}</strong></li>
 	<li>Population of Capital: <strong>{{ capitalPopulation | number: 0}}</strong></li>
 </ul>
 
+<div ng-repeat="neighbor in neighbors">
+	<a href="#/countries/{{ neighbor.countryCode }}/{{ neighbor.countryName }}">{{ neighbor.countryName }}</a>
+</div>

@@ -4,7 +4,12 @@ body {
   font-size: 100%;
 }
 
-a {
+#container>a {
+  text-decoration: underline;
+  color: blue;
+}
+
+td>a {
   text-decoration: none;
   color: inherit;
 }
