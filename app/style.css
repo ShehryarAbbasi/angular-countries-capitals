@@ -1,17 +1,71 @@
+@import url(http://fonts.googleapis.com/css?family=Exo);
+
 body {
   margin-left: 10px;
   text-align: left;
   font-size: 100%;
+  font-family: 'Exo', sans-serif;
 }
 
-#container>a {
-  text-decoration: underline;
-  color: blue;
+#indexContainer {
+  text-align: center;
+}
+
+
+#countryContainer, #homeContainer {
+  width: 500px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#homeContainer {
+  text-align: justify;
+  padding: 6px;
+}
+
+#homeContainer>p {
+  font-size: 1.05em;
+  line-height: 20px;
+}
+
+a {
+  color: #c0392b;
+  display: inline;
 }
 
 td>a {
-  text-decoration: none;
-  color: inherit;
+  color: #f1c40f;
+}
+
+a:hover {
+  text-decoration: overline;
+}
+
+#neighborList {
+  float: left;
+  padding: 6px;
+}
+
+li {
+  list-style: none;
+  float: left;
+  clear: left;
+  padding: 6px;
+}
+
+#flagMapContainer {
+  padding: 20px;
+  clear: both;
+}
+
+#flagMapContainer>img#flag {
+  width: 150px;
+}
+
+#flagMapContainer>img#map {
+  height: 150px;
+  margin-left: 20px;
 }
 
 #header>th {

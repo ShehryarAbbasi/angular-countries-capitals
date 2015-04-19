@@ -1,18 +1,22 @@
 
-<h3>Country: {{country}}</h3>
-<ul>
-	<li>Population of Country: <strong>{{ countryPopulation | number: 0 }}</strong></li>
-	<li>Area: <strong>{{ countryArea }}</strong> </li>
-	<li>Capital: <strong>{{ countryCapital }}</strong></li>
-	<li>Population of Capital: <strong>{{ capitalPopulation | number: 0}}</strong></li>
-</ul>
+<div id="countryContainer">
+	
+	<ul>
+		<li><h2>{{country}}</h2></li>
+		<li>Population of Country: <strong>{{ countryPopulation | number: 0 }}</strong></li>
+		<li>Area: <strong>{{ countryArea | number: 0}} square km</strong> </li>
+		<li>Capital: <strong>{{ countryCapital }}</strong></li>
+		<li>Population of Capital: <strong>{{ capitalPopulation | number: 0}}</strong></li>
+		<li><strong>{{ neighborCount}}</strong> Neighbors: </li>
+		<div id="neighborList" ng-repeat="neighbor in neighbors">
+			<a href="#/countries/{{ neighbor.countryCode }}/{{ neighbor.countryName }}">{{ neighbor.countryName }}</a>
+		</div>
+	</ul>
 
-<div ng-repeat="neighbor in neighbors">
-	<a href="#/countries/{{ neighbor.countryCode }}/{{ neighbor.countryName }}">{{ neighbor.countryName }}</a>
-</div>
-
-<div>
-	<img src="http://www.geonames.org/flags/x/{{countryCode | lowercase}}.gif" />
-	<img id='myImage' src="http://www.geonames.org/img/country/250/{{countryCode}}.png" />
+	<div id="flagMapContainer">
+		<img id="flag" src="http://www.geonames.org/flags/x/{{countryCode | lowercase}}.gif" />
+		<img id="map" src="http://www.geonames.org/img/country/250/{{countryCode}}.png" />
+	</div>
+	
 
 </div>

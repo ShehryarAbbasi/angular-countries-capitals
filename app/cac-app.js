@@ -84,6 +84,7 @@ angular.module('CaCApp', ['ngRoute'])
 					return GeonamesFactory.getNeighbors(countryCode)
 							.success( function (response) {
 									$scope.neighbors = response.geonames;
+									$scope.neighborCount = response.geonames.length;
 							});
 				},
 				loadCapital = function ()
