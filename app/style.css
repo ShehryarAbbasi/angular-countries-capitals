@@ -1,24 +1,29 @@
+/*===================== global styles */
 @import url(http://fonts.googleapis.com/css?family=Exo);
 
 body {
-  margin-left: 10px;
+  margin: 0;
+  padding: 0;
   text-align: left;
   font-size: 100%;
   font-family: 'Exo', sans-serif;
 }
 
+a {
+  color: #c0392b;
+  display: inline;
+}
+
+a:hover {
+  text-decoration: overline;
+}
+
+/*===================== styles for index.html */
 #indexContainer {
   text-align: center;
 }
 
-
-#countryContainer, #homeContainer {
-  width: 500px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
+/*===================== styles for home.html */
 #homeContainer {
   text-align: justify;
   padding: 6px;
@@ -29,17 +34,23 @@ body {
   line-height: 20px;
 }
 
-a {
-  color: #c0392b;
-  display: inline;
+#homeContainer {
+  width: 500px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-td>a {
-  color: #f1c40f;
+/*===================== styles for country.html */
+#countryContainer {
+  width: 500px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-a:hover {
-  text-decoration: overline;
+#countryContainer>ul>li>h2 {
+  text-decoration: underline;
 }
 
 #neighborList {
@@ -66,6 +77,11 @@ li {
 #flagMapContainer>img#map {
   height: 150px;
   margin-left: 20px;
+}
+
+/*===================== styles for the countries.html */
+td>a {
+  color: #f1c40f;
 }
 
 #header>th {

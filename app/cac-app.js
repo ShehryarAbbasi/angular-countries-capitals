@@ -36,16 +36,28 @@ angular.module('CaCApp', ['ngRoute'])
 
 		exports = {
 			getAllCountries: function() {
-				return $http.get(apiCountries, {cache: true});
+				return $http.get(apiCountries, {cache: true})
+					.then(function(countries) {
+						return countries.data.geonames;		//this further refines the response data
+				});
 			},
 			getCountry: function(countryCode, country) {
-				return $http.get(apiCountries + "&q=" + country + "&country=" + countryCode, {cache: true});
+				return $http.get(apiCountries + "&q=" + country + "&country=" + countryCode, {cache: true})
+					.then(function(country) {
+						return country.data.geonames[0];	//this further refines the response data
+				});
 			},
 			getCapital: function(countryCode, country, capital) {
-				return $http.get(apiCapitals + "&q=" + country + "&country=" + countryCode + "&name_equals=" + capital, {cache: true});
+				return $http.get(apiCapitals + "&q=" + country + "&country=" + countryCode + "&name_equals=" + capital, {cache: true})
+					.then(function(capital) {
+						return capital.data.geonames[0];	//this further refines the response data
+				});
 			},
 			getNeighbors: function(countryCode) {
-				return $http.get(apiNeighbors + "&country=" + countryCode, {cache: true});
+				return $http.get(apiNeighbors + "&country=" + countryCode, {cache: true})
+					.then(function(neighbors) {
+						return neighbors.data.geonames;		//this further refines the response data
+				});
 			}
 
 		}
@@ -59,43 +71,43 @@ angular.module('CaCApp', ['ngRoute'])
 	}) // end of HomeCtrl Controller
 
 	.controller('AllCountriesCtrl', function($scope, GeonamesFactory){
-		GeonamesFactory.getAllCountries().success(function(response){
-			$scope.countries = response.geonames;
+		GeonamesFactory.getAllCountries().then(function (countries) {
+			$scope.countries = countries;
 		});	
 	}) // end of AllCountriesCtrl Controller
 
 	.controller('OneCountryCtrl', function($scope, countryCode, country, GeonamesFactory){
 
-		$scope.country = country;
-		$scope.countryCode = countryCode;
+		$scope.country = country;				//using this from the resolved route
+		$scope.countryCode = countryCode;		//using this from the resolved route
+	
+		var loadCountry = function ()			//the following uses our Factory data
+			{
+				return GeonamesFactory.getCountry(countryCode, country)
+					.then(function (country) {
+						$scope.countryPopulation = country.population;
+						$scope.countryArea = country.areaInSqKm;
+						$scope.countryCapital = country.capital;
+					});
+			},
+			loadNeighbors = function ()
+			{
+				return GeonamesFactory.getNeighbors(countryCode)
+					.then(function (neighbors) {
+						$scope.neighbors = neighbors;
+						$scope.neighborCount = neighbors.length;
+					});
+			},
+			loadCapital = function ()
+			{
+				return GeonamesFactory.getCapital(countryCode, country, $scope.countryCapital)
+					.then(function (capital) {
+						$scope.capitalPopulation = capital.population;
+					});
+			};
 
-		{
-			var loadCountry = function ()
-				{
-					return GeonamesFactory.getCountry(countryCode, country)
-							.success( function (response) {
-								$scope.countryPopulation = response.geonames[0].population;
-								$scope.countryArea = response.geonames[0].areaInSqKm;
-								$scope.countryCapital = response.geonames[0].capital;
-							});
-				},
-				loadNeighbors = function ()
-				{
-					return GeonamesFactory.getNeighbors(countryCode)
-							.success( function (response) {
-									$scope.neighbors = response.geonames;
-									$scope.neighborCount = response.geonames.length;
-							});
-				},
-				loadCapital = function ()
-				{
-					return GeonamesFactory.getCapital(countryCode, country, $scope.countryCapital)
-							.success( function (response) {
-										$scope.capitalPopulation = response.geonames[0].population;
-									});
-				};
 
-				loadCountry().then(loadNeighbors).then(loadCapital);
-		};
+		loadCountry().then(loadNeighbors).then(loadCapital);	//promise chain!
+		
 
 	}); // end of OneCountryCtrl Controller and App
