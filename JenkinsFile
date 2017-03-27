@@ -1,0 +1,22 @@
+pipeline {
+    agent none
+    node {
+        stages {
+            stage('build') {
+                steps {
+                    sh 'echo running build'
+                }
+            }
+            stage('test') {
+                steps {
+                    sh 'echo running tests'
+                }
+            }
+            stage('deploy') {
+                steps {
+                    sh 'echo deploying'
+                }
+            }
+        }
+    }
+}
